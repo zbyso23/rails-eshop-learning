@@ -17,6 +17,17 @@ Rails.application.routes.draw do
   resources :line_items, only: [ :show ]
   get "up" => "rails/health#show", as: :rails_health_check
 
+  namespace :api do
+    namespace :v1 do
+      resources :ratings, only: [ :index ] do
+        collection do
+          get :category_averages
+        end
+      end
+    end
+  end
+
+
   get "posts/index"
   root "posts#index"
 end
