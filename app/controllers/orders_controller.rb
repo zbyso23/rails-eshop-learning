@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+    @order = Order.find(params[:id])
   end
 
   # GET /orders/new
@@ -20,17 +21,26 @@ class OrdersController < ApplicationController
   end
 
   # POST /orders or /orders.json
-  def create
-    @order = Order.new(order_params)
+  # def create
+  #   @order = Order.new(order_params)
 
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: "Order was successfully created." }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
+  #   respond_to do |format|
+  #     if @order.save
+  #       format.html { redirect_to @order, notice: "Order was successfully created." }
+  #       format.json { render :show, status: :created, location: @order }
+  #     else
+  #       format.html { render :new, status: :unprocessable_entity }
+  #       format.json { render json: @order.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
+  def create
+    @order = Order.create_from_cart(current_cart, current_user) # current_user by měl být autentizovaný
+
+    if @order
+      redirect_to @order, notice: "Objednávka byla úspěšně vytvořena."
+    else
+      redirect_to cart_path(current_cart), alert: "Košík je prázdný, objednávka nebyla vytvořena."
     end
   end
 
