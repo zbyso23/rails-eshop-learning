@@ -2,6 +2,43 @@
   <div>
     <strong>User:</strong>
     <%= cart.user_id %>
+
+    <h1>Váš nákupní košík</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Produkt</th>
+          <th>Množství</th>
+          <th>Cena</th>
+          <th>Celkem</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @cart.line_items.each do |item| %>
+          <tr>
+            <td><%= item.product.name %></td>
+            <td>
+              <%= form_with(model: item, url: cart_line_item_path(current_cart, item), method: :patch) do |form| %>
+                <%= form.number_field :quantity, min: 1 %>
+                <%= form.submit "Aktualizovat", class: "button" %>
+              <% end %>
+            </td>
+            <td><%= item.price %></td>
+            <td><%= item.total_price %></td>
+            <td><%= button_to "Odstranit", cart_line_item_path(current_cart, item), method: :delete %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <p><strong>Celkem:</strong> <%= @cart.total_price %></p>
+
+    <% if @cart.line_items.any? %>
+      <%= button_to "Objednat", orders_path, method: :post %>
+    <% end %>
   </div>
 
 </div>

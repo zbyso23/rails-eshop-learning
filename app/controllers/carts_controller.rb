@@ -1,17 +1,16 @@
 class CartsController < ApplicationController
-  # before_action :set_cart, only: %i[ show edit update destroy ]
-  before_action :set_cart, only: %i[ show ]
+  before_action :set_cart, only: [ :show, :edit, :update, :destroy ]
 
   # GET /carts or /carts.json
   def index
     @carts = Cart.all
+    @cart = @current_cart
   end
 
   # GET /carts/1 or /carts/1.json
-  # def show
-  #   @cart = current_cart
-  # end
-  def show; end
+  def show
+    @cart = @current_cart
+  end
 
   # GET /carts/new
   def new
@@ -62,11 +61,8 @@ class CartsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    # def set_cart
-    #   @cart = Cart.find(params.expect(:id))
-    # end
     def set_cart
-      @cart = find_or_create_cart # Use method from ApplicationController
+      @cart = find_current_cart # Use method from ApplicationController
     end
 
 

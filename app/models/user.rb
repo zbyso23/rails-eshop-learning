@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :carts
+  has_one :cart
   has_many :orders
   has_many :comments
   has_many :ratings

@@ -21,19 +21,6 @@ class OrdersController < ApplicationController
   end
 
   # POST /orders or /orders.json
-  # def create
-  #   @order = Order.new(order_params)
-
-  #   respond_to do |format|
-  #     if @order.save
-  #       format.html { redirect_to @order, notice: "Order was successfully created." }
-  #       format.json { render :show, status: :created, location: @order }
-  #     else
-  #       format.html { render :new, status: :unprocessable_entity }
-  #       format.json { render json: @order.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
   def create
     @order = Order.create_from_cart(current_cart, current_user) # current_user by měl být autentizovaný
 

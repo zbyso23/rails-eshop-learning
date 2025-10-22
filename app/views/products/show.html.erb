@@ -3,8 +3,16 @@
 <%= render @product %>
 
 <div>
+  <%= form_tag cart_line_items_path(@current_cart), method: :post do %>
+    <%= hidden_field_tag :product_id, @product.id %>
+    <%= number_field_tag :quantity, 1, min: 1 %>
+    <%= submit_tag "Přidat do košíku" %>
+  <% end %>
+
   <%= link_to "Edit this product", edit_product_path(@product) %> |
   <%= link_to "Back to products", products_path %>
 
   <%= button_to "Destroy this product", @product, method: :delete %>
+
+  <%= link_to 'Zpět', products_path %>
 </div>

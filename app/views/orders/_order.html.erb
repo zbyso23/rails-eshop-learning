@@ -1,8 +1,4 @@
 <div id="<%= dom_id order %>">
-  <div>
-    <strong>Total price:</strong>
-    <%= order.total_price %>
-  </div>
 
   <div>
     <strong>Status:</strong>
@@ -14,4 +10,31 @@
     <%= order.user_id %>
   </div>
 
+  <h1>Objednávka č. <%= order.id %></h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Množství</th>
+        <th>Cena</th>
+        <th>Celkem</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% order.line_items.each do |item| %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%= item.quantity %></td>
+          <td><%= item.price %></td>
+          <td><%= item.total_price %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><strong>Celková cena:</strong> <%= order.total_price %></p>
+
+  <%= link_to 'Zpět na produkty', root_path %>
 </div>
