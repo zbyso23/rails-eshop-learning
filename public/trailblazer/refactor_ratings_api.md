@@ -546,4 +546,3 @@ bundle exec rspec spec/concepts/rating/
 ✅ **Stránkování** (max 100/stránka)
 ✅ **Testy** (*RSpec*)
 ✅ **Dokumentace** (*Markdown*)
-

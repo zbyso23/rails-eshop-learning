@@ -68,7 +68,7 @@ module Rating::Contract
 end
 ```
 
-4. Refactor Controller
+## 4. Refactor Controller
 ```ruby
 # app/controllers/ratings_controller.rb
 class RatingsController < ApplicationController
@@ -166,12 +166,73 @@ resources :ratings
 **Testování** - otestuješ *operaci* samostatně
 **API** - můžeš použít stejnou *operaci* pro **API endpoint**
 
-
+## 8. Debug
 ```ruby
+# app/controllers/ratings_controller.rb
+def create
+  result = Rating::Operation::Create.call(
+    params: params.to_unsafe_h,
+    current_user: current_user
+  )
+
+  # DEBUG
+  puts "=== RESULT ==="
+  puts "Success: #{result.success?}"
+  puts "Contract: #{result[:contract].inspect}"
+  puts "Model: #{result[:model].inspect}"
+  puts "Errors: #{result['contract.default']&.errors&.full_messages}"
+  puts "=============="
+
+  respond_to do |format|
+    if result.success?
+      # ...
+    else
+      # ERROR DEBUG:
+      puts "=== ERROR ==="
+      puts result[:contract].errors.full_messages
+      puts "============="
+      
+      format.html { 
+        @product = Product.find(params[:rating][:product_id])
+        render 'products/show', status: :unprocessable_entity 
+      }
+    end
+  end
+end
 ```
 
-```ruby
-```
+**or**
 
 ```ruby
+# app/concepts/rating/operation/create.rb
+module Rating::Operation
+  class Create < Trailblazer::Operation
+    step :model
+    step :contract_build
+    step :contract_validate
+    step :assign_user
+    step :persist
+
+    def model(ctx, **)
+      puts "DEBUG: model krok"
+      ctx[:model] = Rating.new
+      puts "DEBUG: model = #{ctx[:model].inspect}"
+      true  # Important - return true!
+    end
+
+    def contract_build(ctx, **)
+      puts "DEBUG: contract_build"
+      ctx[:contract] = Rating::Contract::Create.new(ctx[:model])
+      true
+    end
+
+    def contract_validate(ctx, params:, **)
+      puts "DEBUG: contract_validate"
+      puts "DEBUG: params = #{params.inspect}"
+      ctx[:contract].validate(params[:rating])
+    end
+    
+    # ...
+  end
+end
 ```
