@@ -546,3 +546,81 @@ bundle exec rspec spec/concepts/rating/
 ✅ **Stránkování** (max 100/stránka)
 ✅ **Testy** (*RSpec*)
 ✅ **Dokumentace** (*Markdown*)
+
+## 16. Fix testy
+Add to **Gemfile**
+```bash
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+end
+```
+
+```bash
+bundle install
+```
+
+Initialize **RSpec tests**
+```bash
+rails generate rspec:install
+```
+
+Přidej konfiguraci do `spec/rails_helper.rb`:
+Na začátek souboru (za `require 'rspec/rails'`)
+```ruby
+require 'factory_bot_rails'
+
+RSpec.configure do |config|
+  # Přidej tenhle řádek:
+  config.include FactoryBot::Syntax::Methods
+  
+  # ... zbytek konfigurace
+end
+```
+
+Create `spec/factories/categories.rb`:
+```ruby
+FactoryBot.define do
+  factory :category do
+    name { "Test Category" }
+  end
+end
+```
+
+and `spec/factories/products.rb`:
+```ruby
+FactoryBot.define do
+  factory :product do
+    name { "Test Product" }
+    description { "Test description" }
+    price { 100.0 }
+    association :category
+  end
+end
+```
+
+`spec/factories/users.rb`:
+```ruby
+FactoryBot.define do
+  factory :user do
+    email { "user@example.com" }
+    # Přidej další povinné atributy podle tvého User modelu
+  end
+end
+```
+
+`spec/factories/ratings.rb`:
+```ruby
+FactoryBot.define do
+  factory :rating do
+    value { rand(1..5) }
+    association :product
+    association :user
+  end
+end
+```
+
+Run Tests again.
+```bash
+bundle exec rspec spec/concepts/rating/
+```

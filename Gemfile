@@ -1,7 +1,8 @@
 source "https://rubygems.org"
 
-gem 'trailblazer-rails'
-gem 'reform-rails'
+gem "trailblazer-rails"
+gem "reform-rails"
+gem "kaminari"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.0"
@@ -55,6 +56,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :development do

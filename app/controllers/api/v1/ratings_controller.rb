@@ -16,7 +16,8 @@ module Api
                 product: { only: [ :id, :name ] },
                 user: { only: [ :id, :email ] }
               }
-            )
+            ),
+            pagination: result[:pagination]
           }
         else
           render json: { success: false, errors: "Failed to fetch ratings" }, status: :unprocessable_entity
