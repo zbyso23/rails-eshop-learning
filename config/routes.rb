@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :products do
     resources :comments
-    resources :ratings
+    resources :ratings, only: [ :create ]
   end
 
   resources :carts do

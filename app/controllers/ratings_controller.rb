@@ -19,17 +19,45 @@ class RatingsController < ApplicationController
   def edit
   end
 
-  # POST /ratings or /ratings.json
-  def create
-    @rating = Rating.new(rating_params)
+  # POST /ratings or /ratings.json [w/o]
+  # def create
+  #   @rating = Rating.new(rating_params)
 
+  #   respond_to do |format|
+  #     if @rating.save
+  #       format.html { redirect_to @rating, notice: "Rating was successfully created." }
+  #       format.json { render :show, status: :created, location: @rating }
+  #     else
+  #       format.html { render :new, status: :unprocessable_entity }
+  #       format.json { render json: @rating.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
+
+  # POST /ratings
+  def create
+    result = Rating::Operation::Create.call(
+      params: params.to_unsafe_h,
+      current_user: current_user
+    )
+    puts "=== RESULT ==="
+    puts "Success: #{result.success?}"
+    puts "Contract: #{result[:contract].inspect}"
+    puts "Model: #{result[:model].inspect}"
+    puts "Errors: #{result['contract.default']&.errors&.full_messages}"
+    puts "=============="
     respond_to do |format|
-      if @rating.save
-        format.html { redirect_to @rating, notice: "Rating was successfully created." }
+      if result.success?
+        @rating = result[:model]
+        format.html { redirect_to product_path(@rating.product), notice: "Hodnocení bylo přidáno." }
         format.json { render :show, status: :created, location: @rating }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @rating.errors, status: :unprocessable_entity }
+
+        format.html {
+          @product = Product.find(params[:rating][:product_id])
+          render "products/show", status: :unprocessable_entity
+        }
+        format.json { render json: result[:contract].errors, status: :unprocessable_entity }
       end
     end
   end

@@ -19,4 +19,31 @@
     <%= product.category_id %>
   </div>
 
+  <h2>Hodnocení (Ratings)</h2>
+
+  <% if product.ratings.any? %>
+    <ul>
+      <% product.ratings.each do |rating| %>
+        <li>
+          <strong><%= rating.user_id %></strong>: 
+          <%= "⭐" * rating.value %> (<%= rating.value %>/5)
+        </li>
+      <% end %>
+    </ul>
+    
+    <p><strong>Průměr:</strong> <%= product.ratings.average(:value).round(1) %>/5</p>
+  <% else %>
+    <p>Zatím žádné hodnocení.</p>
+  <% end %>
+
+  <h3>Přidat hodnocení</h3>
+  <%= form_with(model: Rating.new, url: product_ratings_path(product)) do |form| %>
+    <%= form.hidden_field :product_id, value: product.id %>
+    
+    <%= form.label :value, "Hodnocení (1-5):" %>
+    <%= form.number_field :value, min: 1, max: 5, required: true %>
+    
+    <%= form.submit "Ohodnotit" %>
+  <% end %>
+  
 </div>

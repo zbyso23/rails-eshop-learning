@@ -20,12 +20,28 @@ class OrdersController < ApplicationController
   def edit
   end
 
-  # POST /orders or /orders.json
-  def create
-    @order = Order.create_from_cart(current_cart, current_user) # current_user by měl být autentizovaný
+  # POST /orders or /orders.json [w/o]
+  # def create
+  #   @order = Order.create_from_cart(current_cart, current_user) # current_user by měl být autentizovaný
 
-    if @order
-      redirect_to @order, notice: "Objednávka byla úspěšně vytvořena."
+  #   if @order
+  #     redirect_to @order, notice: "Objednávka byla úspěšně vytvořena."
+  #   else
+  #     redirect_to cart_path(current_cart), alert: "Košík je prázdný, objednávka nebyla vytvořena."
+  #   end
+  # end
+
+  # POST /orders
+  def create
+    # Zavolej operaci místo model metody
+    result = Order::Operation::Create.call(
+      params: {},  # Prázdné, protože bereme z cartu
+      current_cart: current_cart,
+      current_user: current_user
+    )
+
+    if result.success?
+      redirect_to result[:model], notice: "Objednávka byla úspěšně vytvořena."
     else
       redirect_to cart_path(current_cart), alert: "Košík je prázdný, objednávka nebyla vytvořena."
     end

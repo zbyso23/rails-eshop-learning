@@ -108,6 +108,10 @@ GEM
     debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    declarative (0.0.20)
+    disposable (0.6.3)
+      declarative (>= 0.0.9, < 1.0.0)
+      representable (>= 3.1.1, < 4)
     dotenv (3.1.8)
     drb (2.2.3)
     ed25519 (1.4.0)
@@ -128,6 +132,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    hashie (5.0.0)
+    hirb (0.7.3)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
@@ -278,9 +284,20 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    reform (2.6.2)
+      disposable (>= 0.5.0, < 1.0.0)
+      representable (>= 3.1.1, < 4)
+      uber (< 0.2.0)
+    reform-rails (0.3.1)
+      activemodel (>= 5.0)
+      reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.11.3)
     reline (0.6.2)
       io-console (~> 0.5)
+    representable (3.2.0)
+      declarative (< 0.1.0)
+      trailblazer-option (>= 0.1.1, < 0.2.0)
+      uber (< 0.2.0)
     rexml (3.4.4)
     rubocop (1.81.6)
       json (~> 2.3)
@@ -355,12 +372,44 @@ GEM
     thruster (0.1.16-x86_64-darwin)
     thruster (0.1.16-x86_64-linux)
     timeout (0.4.3)
+    trailblazer (2.1.3)
+      trailblazer-activity-dsl-linear (>= 1.2.3, < 1.3.0)
+      trailblazer-developer (>= 0.1.0, < 0.2.0)
+      trailblazer-macro (>= 2.1.15, < 2.2.0)
+      trailblazer-macro-contract (>= 2.1.4, < 2.2.0)
+      trailblazer-operation (>= 0.9.0, < 1.0.0)
+    trailblazer-activity (0.17.0)
+      trailblazer-context (~> 0.5.0)
+      trailblazer-option (~> 0.1.0)
+    trailblazer-activity-dsl-linear (1.2.6)
+      trailblazer-activity (>= 0.17.0, < 0.18.0)
+      trailblazer-declarative (>= 0.0.1, < 0.1.0)
+    trailblazer-context (0.5.1)
+      hashie (>= 3.0.0)
+    trailblazer-declarative (0.0.2)
+    trailblazer-developer (0.1.0)
+      hirb
+      trailblazer-activity-dsl-linear (>= 1.2.0, < 1.3.0)
+    trailblazer-macro (2.1.16)
+      trailblazer-activity-dsl-linear (>= 1.2.0, < 1.3.0)
+      trailblazer-operation (>= 0.10.1)
+    trailblazer-macro-contract (2.1.5)
+      reform (>= 2.2.0, < 3.0.0)
+      trailblazer-activity-dsl-linear (>= 1.2.0, < 1.3.0)
+    trailblazer-operation (0.11.1)
+      trailblazer-activity-dsl-linear (>= 1.2.3, < 1.3.0)
+      trailblazer-developer (>= 0.1.0, < 0.2.0)
+    trailblazer-option (0.1.2)
+    trailblazer-rails (2.4.4)
+      railties (>= 6.0.0)
+      trailblazer (>= 2.1.0, < 2.2.0)
     tsort (0.2.0)
     turbo-rails (2.0.17)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    uber (0.1.0)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
@@ -406,6 +455,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.0)
+  reform-rails
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
@@ -413,6 +463,7 @@ DEPENDENCIES
   solid_queue
   stimulus-rails
   thruster
+  trailblazer-rails
   turbo-rails
   tzinfo-data
   web-console
