@@ -1,14 +1,16 @@
-# Rating::Create v Trailblazer - Jednoduchý příklad
+# II. Trailblazer Refactoring - Rating::Create v Trailblazer - Jednoduchý příklad
 
 Rating je perfektní na ukázku! Jednoduchý **CRUD** bez složité logiky.
 
 ## 1. Vytvoř strukturu
+
 ```bash
 mkdir -p app/concepts/rating/operation
 mkdir -p app/concepts/rating/contract
 ```
 
-2. Operation - Rating::Create
+## 2. Operation - Rating::Create
+
 ```ruby
 # app/concepts/rating/operation/create.rb
 module Rating::Operation
@@ -50,6 +52,7 @@ end
 ```
 
 ## 3. Contract - Validace
+
 ```ruby
 # app/concepts/rating/contract/create.rb
 module Rating::Contract
@@ -69,6 +72,7 @@ end
 ```
 
 ## 4. Refactor Controller
+
 ```ruby
 # app/controllers/ratings_controller.rb
 class RatingsController < ApplicationController
@@ -104,6 +108,7 @@ end
 ```
 
 ## 5. Přidej Rating do Product show
+
 ```html
 # app/views/products/show.html.erb
 <%= render @product %>
@@ -143,6 +148,7 @@ end
 ```
 
 ## 6. Upravit routes (pokud chceš nested)
+
 ```ruby
 # config/routes.rb
 resources :products do
@@ -167,6 +173,7 @@ resources :ratings
 **API** - můžeš použít stejnou *operaci* pro **API endpoint**
 
 ## 8. Debug
+
 ```ruby
 # app/controllers/ratings_controller.rb
 def create

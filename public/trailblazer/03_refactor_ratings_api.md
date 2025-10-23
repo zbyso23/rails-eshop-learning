@@ -1,4 +1,4 @@
-# API pro Ratings + Agregace v Trailblazer
+# III. Trailblazer Refactoring - API pro Ratings + Agregace v Trailblazer
 
 ## Vytvoříme:
 * API endpoint pro seznam všech ratings

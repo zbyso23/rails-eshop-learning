@@ -1,4 +1,4 @@
-# Trailblazer Refactoring - Order jako ukázka
+# I. Trailblazer Refactoring - Order jako ukázka
 
 Ukážu ti jeden konkrétní případ - vytvoření objednávky (`create`), abys viděl principy.
 ## 1. Struktura Trailblazer (TRB)
