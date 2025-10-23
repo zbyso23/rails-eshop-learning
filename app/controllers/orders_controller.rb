@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+    authorize @order
     @order = Order.find(params[:id])
   end
 
@@ -49,6 +50,8 @@ class OrdersController < ApplicationController
 
   # PATCH/PUT /orders/1 or /orders/1.json
   def update
+    authorize @order
+
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to @order, notice: "Order was successfully updated.", status: :see_other }
@@ -62,6 +65,7 @@ class OrdersController < ApplicationController
 
   # DELETE /orders/1 or /orders/1.json
   def destroy
+    authorize @order
     @order.destroy!
 
     respond_to do |format|

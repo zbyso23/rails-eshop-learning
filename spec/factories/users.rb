@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    email { "user@example.com" }
-    # Přidej další povinné atributy podle tvého User modelu
+    sequence(:email) { |n| "user#{n}@example.com" }
+    role { 'customer' }
   end
 end

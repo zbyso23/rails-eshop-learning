@@ -24,6 +24,53 @@
   </head>
 
   <body>
-    <%= yield %>
+    <!-- Navigace -->
+    <nav style="background: #333; color: white; padding: 15px;">
+      <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <%= link_to "E-shop", root_path, style: "color: white; text-decoration: none; font-size: 20px; font-weight: bold;" %>
+        </div>
+        
+        <% if user_signed_in? %>
+          <div style="display: flex; gap: 20px; align-items: center;">
+            <span><%= current_user.email %> (<%= current_user.role %>)</span>
+            <%= link_to "Produkty", products_path, style: "color: white;" %>
+            <%= link_to "Objednávky", orders_path, style: "color: white;" %>
+            <%= link_to "Košík", cart_path(current_cart), style: "color: white;" %>
+            <%= button_to "Odhlásit", logout_path, method: :delete, style: "background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;" %>
+          </div>
+        <% end %>
+      </div>
+    </nav>
+
+    <!-- Development user switcher -->
+    <% if Rails.env.development? && user_signed_in? %>
+      <div style="background: #ffc107; padding: 10px; text-align: center;">
+        <strong>DEV MODE:</strong> Přepnout na:
+        <% User.all.each do |u| %>
+          <% unless u.id == current_user.id %>
+            <%= button_to u.email, switch_user_path(u), method: :post, style: "display: inline; margin: 0 5px; padding: 5px 10px; font-size: 12px;" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Flash messages -->
+    <% if notice %>
+      <div style="background: #d4edda; color: #155724; padding: 15px; margin: 20px; border-radius: 4px;">
+        <%= notice %>
+      </div>
+    <% end %>
+    
+    <% if alert %>
+      <div style="background: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border-radius: 4px;">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <!-- Main content -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+      <%= yield %>
+    </div>
   </body>
 </html>

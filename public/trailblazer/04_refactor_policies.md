@@ -277,7 +277,7 @@ end
 ```
 
 ## 7. Update Controllers
-app/controllers/products_controller.rb
+`app/controllers/products_controller.rb`
 
 ```ruby
 class ProductsController < ApplicationController

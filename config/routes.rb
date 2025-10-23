@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root "products#index"
+
   resources :users
   resources :categories
   resources :products do
@@ -27,7 +29,17 @@ Rails.application.routes.draw do
     end
   end
 
+  post "switch_user/:user_id", to: "sessions#switch_user", as: :switch_user
+
+  # Přihlášení
+  get "login", to: "sessions#new"
+  post "login", to: "sessions#create"
+  delete "logout", to: "sessions#destroy"
+
+  # Pro development - rychlé přepínání
+  if Rails.env.development?
+    post "switch_user/:user_id", to: "sessions#switch_user", as: :switch_user
+  end
 
   get "posts/index"
-  root "posts#index"
 end

@@ -1,8 +1,16 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-  helper_method :current_cart, :current_user
+  helper_method :current_cart, :current_user, :user_signed_in?
   before_action :set_current_cart
+
+  before_action :authenticate_user!
+  before_action :set_current_cart
+
+  # Pundit errors
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
@@ -35,6 +43,25 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.first
+    # Pro development - simulace přihlášeného usera
+    # V produkci použij Devise nebo jinou autentizaci
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
+  def user_signed_in?
+    current_user.present?
+  end
+
+  def authenticate_user!
+    unless user_signed_in?
+      redirect_to login_path, alert: "Pro pokračování se musíte přihlásit"
+    end
+  end
+
+  private
+
+  def user_not_authorized
+    flash[:alert] = "Nemáte oprávnění k této akci."
+    redirect_to(request.referrer || root_path)
   end
 end

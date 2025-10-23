@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "trailblazer-rails"
 gem "reform-rails"
 gem "kaminari"
+gem "pundit"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.0"
@@ -70,4 +71,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "pundit-matchers"
 end

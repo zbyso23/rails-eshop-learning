@@ -2,6 +2,8 @@ class Order < ApplicationRecord
   has_many :line_items, as: :buyable
   belongs_to :user
 
+  validates :user, presence: true
+
   def self.create_from_cart(cart, user)
     # Create order only from cart what is not empty
     return nil if cart.nil? || cart.line_items.empty?
