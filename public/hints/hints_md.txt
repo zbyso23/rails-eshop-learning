@@ -1,0 +1,22 @@
+Element 	      Markdown Syntax
+Headers         # H1
+                ## H2
+                ### H3
+
+Bold            **This text is bold.** or __This text is bold.__
+Italic	        *This text is italic.* or _This text is italic._
+Bold and Italic	***This text is bold and italic.***
+Strikethrough	  ~~This text is struck through.~~
+Unordered list	- Item 1
+                - Item 2
+                - Item 3 
+Ordered list	  1. First item
+                2. Second item
+                3. Third item
+Checklist	      - [x] Completed task
+                - [ ] Incomplete task
+Link	          [Link text](https://www.example.com)
+Image	          ![Alt text](image.jpg)
+Horizontal rule	--- or ***
+Blockquote	    > This is a blockquote.
+Inline code	    ``
