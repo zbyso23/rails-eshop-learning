@@ -29,8 +29,6 @@ Rails.application.routes.draw do
     end
   end
 
-  post "switch_user/:user_id", to: "sessions#switch_user", as: :switch_user
-
   # Přihlášení
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
