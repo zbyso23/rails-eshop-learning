@@ -72,6 +72,8 @@ To, co předáváte do operace, je zcela na vás (bez dvojznačnosti). Ve webov�
 
 ## Operace (Operation)
 
+[Operace](operation-cs.md)
+
 Operace `Comment::Create` je třída, která se stará o celý proces vytváření, ověřování a uchovávání komentářů.
 
 Nezaměňujte ji však s božskou třídou. Operace je koordinační objekt, který dává pokyny menším objektům, jako jsou reprezentanty, formulářový objekt nebo trvalý model, aby toho dosáhly! Ví, jak propojit tyto zúčastněné strany, ale konkrétní implementaci nechává na nich.

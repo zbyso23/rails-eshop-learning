@@ -73,6 +73,8 @@ What you pass into the operation is absolutely your business (no pun intended). 
 
 ## Operation
 
+[Operation](operation-en.md)
+
 The `Comment::Create` operation is a class taking care of the entire process of creating, validating, and persisting a comment.
 
 Don’t confuse this with a god class, though. An operation is an orchestrating object that instructs smaller objects like representers, a form object or the persistent model to accomplish that! It knows how to wire together those stakeholders but leaves the specific implementation up to them.
