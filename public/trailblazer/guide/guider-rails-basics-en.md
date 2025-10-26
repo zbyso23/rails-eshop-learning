@@ -413,3 +413,5 @@ The `Model` macro helps with finding the right blog post instance, and a custom 
 Building a simple CRUD component for a model is very easy with Trailblazer. In this chapter, we really only focused on the business code, and we will learn about Cells in chapter 05.
 
 However, and this is a terrible thing to do, we’ve totally neglected testing! Testing with Trailblazer is incredibly simple and much more straight-forward as compared to Rails and its quite fragmented testing style. We’ll discover the world of testing in the next chapter, and only once we’re finished you can sit back and be proud of your work.
+
+from [here](https://trailblazer.to/2.0/guides/trailblazer/2.0/03-rails-basics)

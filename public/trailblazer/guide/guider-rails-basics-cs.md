@@ -1,13 +1,13 @@
-# 03- Rails Basics
+# 03- Základy Rails
 
-Now that we’ve learned what operations do and how Trailblazer provides convenient macro steps to ease your life as a software engineer, it’s time to check out how to use operations, contracts, and cells in Rails.
+Nyní, když jsme se naučili, co operace dělají a jak Trailblazer poskytuje pohodlné makro kroky, které usnadňují život softwarovým inženýrům, je čas podívat se, jak používat operace, smlouvy a buňky v Rails.
 
- Where’s the [EXAMPLE CODE?](https://github.com/trailblazer/guides/tree/operation-03) ([Offline](guides-operation-03.zip))
+ Kde je [PŘÍKLAD KÓDU?](https://github.com/trailblazer/guides/tree/operation-03) ([Offline](guides-operation-03.zip))
 
-## Setup
-In this example we will use Trailblazer operations with Reform form objects to validate and process incoming data.
+## Nastavení
+V tomto příkladu použijeme operace Trailblazer s objekty formuláře Reform k ověření a zpracování příchozích dat.
 
-Here’s the `Gemfile`.
+Zde je soubor `Gemfile`.
 
 ```
 source "https://rubygems.org"
@@ -33,17 +33,17 @@ group :test do
 end
 ```
 
-The `trailblazer-rails` gem makes the integration a walk in the park. It pulls and invokes the `trailblazer-loader` [gem](https://trailblazer.to/2.0/gems/trailblazer/loader) automatically for [you via a Railtie](https://github.com/trailblazer/trailblazer-rails/blob/master/lib/trailblazer/rails/railtie.rb). All Trailblazer files are eager-loaded.
+Gem `trailblazer-rails` dělá integraci hračkou. Automaticky stáhne a spustí gem `trailblazer-loader` [gem](https://trailblazer.to/2.0/gems/trailblazer/loader) za vás pomocí Railtie [https://github.com/trailblazer/trailblazer-rails/blob/master/lib/trailblazer/rails/railtie.rb]. Všechny soubory Trailblazer jsou načítány předem.
 
-In Trailblazer, we don’t believe that an ever-changing runtime environment is a good idea. Code that is, maybe, loaded, in a certain order, maybe, is a source of many production problems. Even in development mode we want an environment as close to production as possible.
+V Trailblazer nevěříme, že neustále se měnící runtime prostředí je dobrý nápad. Kód, který je možná načítán v určitém pořadí, může být zdrojem mnoha problémů ve výrobě. I v režimu vývoje chceme prostředí co nejblíže výrobě.
 
-This is why `trailblazer-loader` always loads all TRB files at server startup. The speed decrease is about 2 seconds and is ignorable, since the automatic reloading with Rails still works.
+Proto `trailblazer-loader` vždy načte všechny soubory TRB při spuštění serveru. Zpomalení je asi 2 sekundy a je zanedbatelné, protože automatické načítání s Rails stále funguje.
 
-The `traiblazer-rails` gem also adds one single method `#run` to the `ApplicationController` which we’ll discover soon.
+Gem `traiblazer-rails` také přidává jednu jedinou metodu `#run` do `ApplicationController`, kterou brzy objevíme.
 
-## File Structure
+## Struktura souborů
 
-You can always discover a Trailblazer application in Rails by the `app/concepts` directory.
+Aplikaci Trailblazer v Rails můžete vždy najít v adresáři `app/concepts`.
 
 ```
 ├── app
@@ -83,20 +83,20 @@ You can always discover a Trailblazer application in Rails by the `app/concepts`
 │       └── user.rb
 ```
 
-This is where files are structured by concept, and then by technology. What is very different to Rails has proven to be highly intuitive and emphasizes the modularity TRB brings.
+Zde jsou soubory strukturovány podle konceptu a poté podle technologie. To, co se velmi liší od Rails, se ukázalo jako velmi intuitivní a zdůrazňuje modularitu, kterou TRB přináší.
 
-For example, all classes and views related to the “blog post” concept are located in `app/concepts/blog_post`. The different abstractions are represented with their own directories, such as `blog_post/operation` or `blog_post/contract`.
+Například všechny třídy a pohledy související s konceptem „blogový příspěvek“ se nacházejí v `app/concepts/blog_post`. Různé abstrakce jsou reprezentovány vlastními adresáři, jako například `blog_post/operation` nebo `blog_post/contract`.
 
-Keep in mind that it is also possible to use nested concepts as in `app/concepts/admin/ui/post`.
+Mějte na paměti, že je také možné použít vnořené koncepty, jako v `app/concepts/admin/ui/post`.
 
-Also, in Trailblazer we decided that **all file and class names are singular** which means you don’t have to think about whether or not something should be plural (it is still possible to use plural names, e.g. `app/concepts/invoices/..`).
+V Trailblazeru jsme se také rozhodli, že **všechny názvy souborů a tříd jsou v jednotném čísle**, což znamená, že nemusíte přemýšlet o tom, zda by něco mělo být v množném čísle (stále je možné používat názvy v množném čísle, např. `app/concepts/invoices/..`).
 
-Your controllers and models, unless desired differently, are still organized the Rails Way, allowing TRB to be used in existing projects for refactoring.
+Vaše řadiče (Controllers) a modely jsou, pokud není požadováno jinak, stále organizovány podle Rails Way, což umožňuje použití TRB v existujících projektech pro refaktoring.
 
-## Presentation Operation
-Since we already covered the essential mechanics in chapter 02, we can jump directly into the first problem: how do we render a form to create a blog post?
+## Prezentační operace
+Jelikož jsme již v kapitole 02 probrali základní mechanismy, můžeme přejít přímo k prvnímu problému: jak vykreslit formulář pro vytvoření blogového příspěvku?
 
-At first, we need a presentation operation that creates an empty `BlogPost` for us and sets up a Reform object which can then be rendered in a view. This operation per convention is named `BlogPost::Create::Present` and sits in `app/concepts/blog_post/operation/create.rb`.
+Nejprve potřebujeme prezentační operaci, která pro nás vytvoří prázdný `BlogPost` a nastaví objekt Reform, který pak lze vykreslit v zobrazení. Tato operace se podle konvence nazývá `BlogPost::Create::Present` a nachází se v `app/concepts/blog_post/operation/create.rb`.
 
 ```ruby
 class BlogPost::Create < Trailblazer::Operation
@@ -109,12 +109,13 @@ class BlogPost::Create < Trailblazer::Operation
 end
 ```
 
-Those are all steps we’ve discussed in chapter 02. Create a new model, and use `Contract::Build` to instantiate a Reform form that decorates the model.
+To jsou všechny kroky, které jsme probírali v kapitole 02. Vytvořte nový model a pomocí `Contract::Build` instancujte formulář Reform, který model zdobí.
 
-It’s totally up to you whether or not you want a separate file for `Present` operations, or if you want to name them `New` and `Edit`. The convention shown here is in use in hundreds of applications and has evolved as a best-practice over the last years.
+Je zcela na vás, zda chcete mít samostatný soubor pro operace `Present`, nebo zda je chcete pojmenovat `New` a `Edit`. Zde uvedená konvence se používá ve stovkách aplikací a v posledních letech se vyvinula jako osvědčená praxe.
 
-## Contract
-The interesting part in the Present operation is the :constant option: it references the BlogPost::Contract::Create class, which itself lives in app/concepts/blog_post/contract/create.rb.
+## Smlouva
+
+Zajímavou částí současné operace je `:constant option:`, která odkazuje na třídu `BlogPost::Contract::Create`, která se nachází v souboru `app/concepts/blog_post/contract/create.rb`.
 
 ```ruby
 require "reform"
@@ -135,11 +136,11 @@ module BlogPost::Contract
 end
 ```
 
-Contracts can be pure `dry-validation` schemas or Reform objects that can in turn use `dry-validation` or `ActiveModel::Validations` as their validation engine. Using a Reform object, whatsoever, will allow rendering that form in a view.
+Smlouvy mohou být čistě schémata `dry-validation` nebo objekty Reform, které mohou zase používat `dry-validation` nebo `ActiveModel::Validations` jako svůj validační engine. Použití objektu Reform v každém případě umožní vykreslení tohoto formuláře v zobrazení.
 
-## Contract Rendering
+## Renderování smlouvy (Contract Rendering)
 
-We now have the form and operation in place and are ready to hook that into the `BlogPostsController`’s `new` action.
+Nyní máme připravený formulář a funkci a jsme připraveni je propojit s akcí `new` v `BlogPostsController`.
 
 ```ruby
 class BlogPostsController < ApplicationController
@@ -149,19 +150,19 @@ class BlogPostsController < ApplicationController
   end
 ```
 
-The `run` method invokes the operation, optionally passes dependencies such as the `current_user` into the operation’s `call`, and then sets some default variables such as `@model` and `@form` for you.
+Metoda `run` vyvolá operaci, volitelně předá závislosti, jako je `current_user`, do `call` operace a poté nastaví některé výchozí proměnné, jako jsou `@model` a `@form`.
 
-The instance variables in the controller are only set for your convenience and could be retrieved via the result object, too. [→ API](https://trailblazer.to/2.0/gems/trailblazer/2.0/rails#run)
+Instance proměnné v kontroléru jsou nastaveny pouze pro vaše pohodlí a lze je také načíst prostřednictvím výsledného objektu. [→ API](https://trailblazer.to/2.0/gems/trailblazer/2.0/rails#run)
 
-After running the operation and retrieving the contract instance, it is now time to render a view with a form, that we can actually fill out and publish our blog post. This happens via `render` and by invoking a cell. The cell’s job is rendering the form, so we need to pass the `@form` object to it.
+Po spuštění operace a načtení instance smlouvy je nyní čas vykreslit pohled s formulářem, který můžeme skutečně vyplnit a publikovat náš blogový příspěvek. To se děje pomocí `render` a vyvoláním buňky. Úkolem buňky je vykreslit formulář, takže jí musíme předat objekt `@form`.
 
-BTW, the Cells gem and the rendering layer it brings is completely optional. If you want, you can keep using ActionView rendering along with operations.
+Mimochodem, gem Cells a vykreslovací vrstva, kterou přináší, jsou zcela volitelné. Pokud chcete, můžete i nadále používat vykreslování ActionView spolu s operacemi.
 
 ---
 
-## Form Cell
+## Buňka (Form Cell)
 
-The `BlogPost::Cell::New` cell is responsible for rendering this view. We will discuss its internals later, but for a quick preview, here’s the cell class.
+Buňka `BlogPost::Cell::New` je zodpovědná za vykreslení tohoto zobrazení. Její vnitřní strukturu probereme později, ale pro rychlý náhled zde uvádíme třídu buňky.
 
 ```ruby
 module BlogPost::Cell
@@ -173,11 +174,11 @@ module BlogPost::Cell
 end
 ```
 
-The `includes` are necessary to import all helpers we need in the view.
+`includes` jsou nezbytné pro import všech pomocníků, které potřebujeme v zobrazení.
 
-The first line `module BlogPost::Cell` is crucial as it creates the module constant `Cell` in the `BlogPost` namespace. It has to be in one single line, otherwise you will get strange constant errors due to a never-fixed bug in Ruby.
+První řádek `module BlogPost::Cell` je klíčový, protože vytváří modulovou konstantu `Cell` v jmenném prostoru `BlogPost`. Musí být v jednom řádku, jinak se vám budou zobrazovat podivné chyby konstant kvůli nikdy neopravené chybě v Ruby.
 
-As all we do is rendering the view, there’s no real code yet. Speaking of views, here is the cell’s view in `app/concepts/blog_post/view/new.slim`.
+Jelikož vše, co děláme, je vykreslování pohledu, zatím neexistuje žádný skutečný kód. Když už mluvíme o pohledech, zde je pohled buňky v `app/concepts/blog_post/view/new.slim`.
 
 ```
 .row.new
@@ -195,23 +196,23 @@ As all we do is rendering the view, there’s no real code yet. Speaking of view
         = f.submit 'Create Post'
 ```
 
-Enough code to render the blog form. It looks a bit sad without any layout, but we’ll come to that shortly.
+Dostatek kódu pro vykreslení formuláře blogu. Bez jakéhokoli rozvržení to vypadá trochu smutně, ale k tomu se dostaneme za chvíli.
 
 ![new post form](03-new-form-layoutless.png)
 
-Submitting this very form will POST it to `/blog_posts/`, which is the next controller action we have to implement.
+Odesláním tohoto formuláře se odešle POST na `/blog_posts/`, což je další akce kontroléru, kterou musíme implementovat.
 
 ---
 
-## Form Processing
+## Zpracování formuláře
 
-Again, we run an operation. This time it’s `BlogPost::Create`.
+Opět spustíme operaci. Tentokrát je to `BlogPost::Create`.
 
-Can you see how controller actions map to operations? This is because in Rails apps, actions correspond to specific application functions (“create blog post”, “search user”, “add comment”), and since the **business logic should be encapsulated in operations**, you will always find controller actions simply dispatching to one operation.
+Vidíte, jak se akce kontroléru mapují na operace? Je to proto, že v aplikacích Rails odpovídají akce konkrétním funkcím aplikace („vytvořit příspěvek do blogu“, „vyhledat uživatele“, „přidat komentář“) a protože **obchodní logika by měla být zapouzdřena v operacích**, vždy najdete akce kontroléru, které jednoduše odesílají jednu operaci.
 
-However, this doesn’t mean you couldn’t use operations for all kinds of smaller tasks, or in background jobs, or as console commands, too.
+To však neznamená, že byste nemohli operace používat pro všechny druhy menších úkolů, v pozadí nebo jako příkazy konzole.
 
-Here’s the controller action dispatching the operation.
+Zde je akce kontroléru, která odesílá operaci.
 
 ```ruby
 def create
@@ -223,11 +224,11 @@ def create
 end
 ```
 
-A nice detail about `run` is: it executes an optional block when the operation was run successfully. This means we can redirect to the index page in case of a successful blog post create. Otherwise, we re-render the form cell.
+Příjemným detailem funkce `run` je, že po úspěšném provedení operace spustí volitelný blok. To znamená, že v případě úspěšného vytvoření blogového příspěvku můžeme přesměrovat na indexovou stránku. V opačném případě znovu vykreslíme buňku formuláře.
 
-Please note that there’s a `return` in the block, causing the controller’s execution to stop. If you forget this, the rest of the `create` method will be executed, too.
+Vezměte prosím na vědomí, že v bloku je příkaz `return`, který zastaví provádění kontroléru. Pokud na to zapomenete, bude proveden i zbytek metody `create`.
 
-Let’s check out the `BlogPost::Create` operation in detail, now.
+Podívejme se nyní podrobně na operaci `BlogPost::Create`.
 
 ---
 
@@ -297,6 +298,8 @@ Remember that this is the place where pagination, filtering, or even delegating 
 Also, the name `"model"` - despite it being an array - is purely conventional.
 
 This array is then passed into the cell and renders an index list. In that list, clicking a link will direct you to a URL such as `/blog_posts/1`, which corresponds to a `show` action.
+
+---
 
 ## Show
 
@@ -413,3 +416,5 @@ The `Model` macro helps with finding the right blog post instance, and a custom 
 Building a simple CRUD component for a model is very easy with Trailblazer. In this chapter, we really only focused on the business code, and we will learn about Cells in chapter 05.
 
 However, and this is a terrible thing to do, we’ve totally neglected testing! Testing with Trailblazer is incredibly simple and much more straight-forward as compared to Rails and its quite fragmented testing style. We’ll discover the world of testing in the next chapter, and only once we’re finished you can sit back and be proud of your work.
+
+from [here](https://trailblazer.to/2.0/guides/trailblazer/2.0/03-rails-basics)
